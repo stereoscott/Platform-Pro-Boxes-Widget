@@ -9,7 +9,14 @@ class Stereo_BoxesWidget extends WP_Widget {
 
   function widget($args, $instance) {        
  		extract($args, EXTR_SKIP);
-  
+    
+    $title = apply_filters( 'widget_title', empty($instance['title']) ? '' : $instance['title'], $instance, $this->id_base);
+    
+    echo $before_widget;
+		if ( !empty( $title ) ) { 
+		  echo $before_title . $title . $after_title; 
+		}
+				
     // THE TEMPLATE
     global $post; 
     $current_post = $post;
@@ -37,21 +44,28 @@ class Stereo_BoxesWidget extends WP_Widget {
     		</div>
 
     <?php endforeach;
+    
+    echo $after_widget;
   }
 
   function update($new_instance, $old_instance) {      
-   $instance['box_set'] = intval($new_instance['box_set']);
-   $instance['box_items'] = intval($new_instance['box_items']);
+    $instance['box_set'] = intval($new_instance['box_set']);
+    $instance['box_items'] = intval($new_instance['box_items']);
+    $instance['title'] = strip_tags($new_instance['title']);
  
-   return $new_instance;
+    return $new_instance;
   }
 
   function form($instance) { 
-   $instance = wp_parse_args( (array) $instance, array('box_set' => false));
-   $terms_array = get_terms('box-sets');
-	 $boxitems = isset($instance['box_items']) ? absint($instance['box_items']) : false;
+    $instance = wp_parse_args( (array) $instance, array('box_set' => false));
+   	$title = strip_tags($instance['title']);
+	  $terms_array = get_terms('box-sets');
+	  $boxitems = isset($instance['box_items']) ? absint($instance['box_items']) : false;
   ?>  
   
+  <p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
+	<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></p>
+	
   <p>
   <label for="<?php echo $this->get_field_id('box_set'); ?>" class="screen-reader-text"><?php _e('Select Box Set'); ?></label>
 	<?php if(is_array($terms_array) && !empty($terms_array)):?>

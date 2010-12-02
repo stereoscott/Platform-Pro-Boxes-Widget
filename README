@@ -1,0 +1,11 @@
+Platform Pro Boxes Widget
+by Scott Meves, 2010
+http://stereointeractive.com/blog
+
+This wordpress widget allows you to specify a box set to display in your sidebar. Works with Pagelines Platform Pro theme.
+
+Add it to your theme by copying the widget source code to your theme's folder and including it in your functions.php:
+
+<?php
+// in functions.php
+require_once(dirname(__FILE__).'/widget.boxes.php');
